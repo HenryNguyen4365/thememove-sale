@@ -88,13 +88,24 @@ const Table = ({ state }) => {
     if (typeof window === "object") {
       const domArr = document.getElementsByClassName("Polaris-DataTable__TableRow Polaris-DataTable--hoverable")
         for(let item of domArr) {
-          if(item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn")[0].innerHTML !== "MinimogWP") {
+          let textName = item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn")[0].innerHTML
+          let textRating = item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric")[0].innerHTML
+          const linkTheme = themeShop.find(theme => theme.name === textName)
+          let a = textName.link(linkTheme?.url)
+          // a.setAttribute("target", "_blank")
+          // a.setAttribute("rel", "noopener noreferrer")
+          let parser = new DOMParser();
+	        let doc = parser.parseFromString(a, 'text/xml');
+          if(linkTheme?.url !== undefined) {
+            item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn")[0].innerHTML = a;
+          }
+          if(textName !== "MinimogWP") {
             item.style.backgroundColor = ""
           }
-          if(item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn")[0].innerHTML === "MinimogWP" && item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric")[0].innerHTML !== 0) {
+          if(textName === "MinimogWP" && textRating !== 0 || doc.firstChild.firstChild.innerHTML === "MinimogWP") {
             item.style.backgroundColor = "#F2D7D5"
           }
-      }
+        }
     }
   }, [rowsUpdate])
   
