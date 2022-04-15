@@ -33,22 +33,22 @@ export const crawlData = async () => {
       const filterData = previousDate.filter(
         (item) => item.name === theme.name
       );
-      if (previousDate.length === 0) {
-        await Customers.findOneAndUpdate(
-          {
-            created_at: format(yesterday, "MM/dd/yyyy"),
-            themeId: theme.themeId,
-            name: theme.name,
-          },
-          {
-            quantity:
-              Number(presentSales.replace(/\D/g, "")) - theme.fixedSales,
-            sales: Number(presentSales.replace(/\D/g, "")) - theme.fixedSales,
-            review: Number(parseFloat(review.match(/[\d\.]+/))),
-          },
-          { upsert: true }
-        );
-      } else {
+      // if (previousDate.length === 0) {
+      //   await Customers.findOneAndUpdate(
+      //     {
+      //       created_at: format(yesterday, "MM/dd/yyyy"),
+      //       themeId: theme.themeId,
+      //       name: theme.name,
+      //     },
+      //     {
+      //       quantity:
+      //         Number(presentSales.replace(/\D/g, "")) - theme.fixedSales,
+      //       sales: Number(presentSales.replace(/\D/g, "")) - theme.fixedSales,
+      //       review: Number(parseFloat(review.match(/[\d\.]+/))),
+      //     },
+      //     { upsert: true }
+      //   );
+      // } else {
       const currentDate = utcToZonedTime(new Date(), "Australia/Sydney");
       await Customers.findOneAndUpdate(
         {
@@ -67,7 +67,7 @@ export const crawlData = async () => {
         },
         { upsert: true }
       );
-      }
+      // }
     });
   } catch (error) {
     console.log(error);
