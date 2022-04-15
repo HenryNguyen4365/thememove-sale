@@ -26,7 +26,7 @@ const Table = ({ state }) => {
     ["Sober", 0, 0],
     ["ekommart", 0, 0],
     ["Bacola", 0, 0],
-    ["Martfury", 0, 0]
+    ["Martfury", 0, 0],
   ]);
 
   const [rowsOfSlack, setRowsOfSlack] = useState([
@@ -49,7 +49,7 @@ const Table = ({ state }) => {
     ["Sober", 0, 0],
     ["ekommart", 0, 0],
     ["Bacola", 0, 0],
-    ["Martfury", 0, 0]
+    ["Martfury", 0, 0],
   ]);
 
   const [title, setTitle] = useState("");
@@ -60,9 +60,7 @@ const Table = ({ state }) => {
     for (let i = 0; i < themeShop.length; i++) {
       filterData.push(state.filter((item) => themeShop[i].name === item.name));
     }
-
     dataSolving(rowsUpdate, filterData, setRowsUpdate);
-
     //Setting up title of table
     const filterDate = [
       ...new Map(
@@ -86,6 +84,20 @@ const Table = ({ state }) => {
     });
   }, [state]);
 
+  useEffect(() => {
+    if (typeof window === "object") {
+      const domArr = document.getElementsByClassName("Polaris-DataTable__TableRow Polaris-DataTable--hoverable")
+        for(let item of domArr) {
+          if(item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn")[0].innerHTML !== "MinimogWP") {
+            item.style.backgroundColor = ""
+          }
+          if(item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn")[0].innerHTML === "MinimogWP" && item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric")[0].innerHTML !== 0) {
+            item.style.backgroundColor = "#F2D7D5"
+          }
+      }
+    }
+  }, [rowsUpdate])
+  
   //Data of Sending to Slack
   useEffect(() => {
     const getData = async () => {
@@ -107,7 +119,7 @@ const Table = ({ state }) => {
   const handleClick = () => {
     sendAlert(buildAlert(rowsOfSlack));
   };
-
+  
   return (
     <Layout.Section fullWidth>
       <Card

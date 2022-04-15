@@ -15,7 +15,6 @@ export const crawlData = async () => {
       await axios.get(theme.url).then((res) => {
         const $ = cheerio.load(res.data);
         presentSales = $(".item-header__sales-count").text();
-        console.log(presentSales)
         review = $(".is-visually-hidden").text();
       });
       const getPreviousData = async () => {

@@ -103,7 +103,6 @@ export const buildAlert = (data) => {
 };
 
 export const sendAlert = (payload) => {
-  console.log(process.env.NEXT_PUBLIC_SLACK_WEBHOOK, "SLACK_WEBHOOK");
   try {
     axios.post(process.env.NEXT_PUBLIC_SLACK_WEBHOOK, JSON.stringify(payload));
   } catch (e) {
