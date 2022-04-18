@@ -49,7 +49,7 @@ export const crawlData = async (res) => {
       //   );
       // } else {
       const currentDate = utcToZonedTime(new Date(), "Australia/Sydney");
-      await Customers.findOneAndUpdate(
+      const data = await Customers.findOneAndUpdate(
         {
           created_at: format(currentDate, "MM/dd/yyyy"),
           themeId: theme.themeId,
@@ -68,7 +68,7 @@ export const crawlData = async (res) => {
       );
       // }
     });
-    res.json("Successfully!")
+    await res.json("Successfully!")
   } catch (error) {
     console.log(error);
   }
