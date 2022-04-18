@@ -7,7 +7,7 @@ import { themeShop } from "../constants/themeShop";
 import { utcToZonedTime } from "date-fns-tz";
 dbConnect();
 
-export const crawlData = async () => {
+export const crawlData = async (res) => {
   try {
     themeShop.forEach(async (theme) => {
       let presentSales;
@@ -68,6 +68,7 @@ export const crawlData = async () => {
       );
       // }
     });
+    res.json("Successfully!")
   } catch (error) {
     console.log(error);
   }
