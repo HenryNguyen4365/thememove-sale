@@ -1,4 +1,4 @@
-import { Card, DataTable, Layout } from "@shopify/polaris";
+import { Card, DataTable, Layout, Link } from "@shopify/polaris";
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -91,24 +91,28 @@ const Table = ({ state }) => {
           let textName = item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn")[0].innerHTML
           let textRating = item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric")[0].innerHTML
           const linkTheme = themeShop.find(theme => theme.name === textName)
-          let a = textName.link(linkTheme?.url)
-          // a.setAttribute("target", "_blank")
-          // a.setAttribute("rel", "noopener noreferrer")
-          let parser = new DOMParser();
-	        let doc = parser.parseFromString(a, 'text/xml');
+
+          let link = document.createElement("a")
+          let linkText = document.createTextNode(textName);
+          link.appendChild(linkText)
+          link.setAttribute("target", "_blank")
+          link.setAttribute("rel", "noopener noreferrer")
+          link.setAttribute("href", linkTheme?.url)
+          link.setAttribute("class", "Polaris-Link")
+
           if(linkTheme?.url !== undefined) {
-            item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn")[0].innerHTML = a;
+            item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn")[0].innerHTML = ''
+            item.getElementsByClassName("Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn")[0].appendChild(link);
           }
           if(textName !== "MinimogWP") {
             item.style.backgroundColor = ""
           }
-          if(textName === "MinimogWP" && textRating !== 0 || doc.firstChild.firstChild.innerHTML === "MinimogWP") {
+          if(textName === "MinimogWP" && textRating !== 0 || link.innerHTML.match("MinimogWP")) {
             item.style.backgroundColor = "#F2D7D5"
           }
-        }
+        } 
     }
   }, [rowsUpdate])
-  
   //Data of Sending to Slack
   useEffect(() => {
     const getData = async () => {
